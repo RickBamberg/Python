@@ -1,0 +1,31 @@
+é colabresearchgoogie com K
+
+RAM
+
+Disco
+
+Tt yo!
+
++ Código + Texto Todas as alterações foram alva
+
+- 4º Aplicação da IA com PLN
+
+>) * Treinamento do modelo como Algoritmo Naive Bayes
+modelo = MultinomialNB()
+modelo.fit(X treino, y treino)
+
+* Função para verificar se um curnírulAa rentém as palavras-chave relevantes usando o modelo
+def verificar palavras chave com lower: ANY iculo, modelo, vetorizador):
+
+curriculo lower = curriculo. lower()
+
+curriculo vetorizado = vetorizador.transform( [curriculo lower] )
+
+resultado = modelo.predict(curriculo vetorizado)
+
+return resultado[0] == 1
+
+» 5º Teste da Aplicação
+
+[ ] 41 célula oculta
+

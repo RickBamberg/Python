@@ -1,0 +1,25 @@
+€ C à colabresearchgoogiecom/drive/1p-OjJGTUb3-SNTe33yShPsIRjUyr6KkvêscroliTo=-764LB2uYPTo ae:
+
+.— + Código + Texto / = —
+* 1
+a TYoeoHA
+
+- 3º Processamento de Dados
+
+- o * Criação dos dados de treinamento
+documentos = [(curriculol, 1), (curriculo2, 1), (curriculo3, 8), (curriculo4, 6)]
+random. shuffle(documentos)
+textos, labels = zip(*documentos)
+* Lista de stop words em português ;
+stop words = ['de', 'com', 'em', 'para', 'um', 'uma', 'e', 'do', 'da', 'os', 'as', 'se', 'por', 'são',
+* Pré-processamento dos textos
+vetorizador = CountVectorizer(stop words=stop words)
+X = vetorizador.fit transform(textos)
+o *& Divisão dos dados em treinamento e teste
+X treino, X teste, y treino, y teste = train test split(X, labels, test size=0.25, random state=42)
+=)
+
+E > 4º Aplicação da IA com PLN
+
+v 28 conclusão: 13:40
+

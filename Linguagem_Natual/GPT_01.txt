@@ -1,0 +1,38 @@
+import PyPDF2
+import re
+
+# Palavras-chave relevantes para a função no setor de TI
+palavras_chave = ['python', 'java', 'javascript', 'c++', 'ruby', 'php', 'html', 'css', 'sql', 'django']
+
+def extrair_texto_pdf(caminho_arquivo):
+    texto = ''
+    with open(caminho_arquivo, 'rb') as arquivo:
+        pdf_leitor = PyPDF2.PdfFileReader(arquivo)
+        for pagina_num in range(pdf_leitor.numPages):
+            pagina = pdf_leitor.getPage(pagina_num)
+            texto += pagina.extractText()
+    return texto.lower()  # Convertendo para minúsculas para comparação sem distinção de maiúsculas e minúsculas
+
+def analisar_curriculo(caminho_arquivo, palavras_chave):
+    texto_curriculo = extrair_texto_pdf(caminho_arquivo)
+    palavras_encontradas = re.findall(r'\b\w+\b', texto_curriculo)
+    palavras_encontradas = set(palavras_encontradas)  # Removendo duplicatas
+
+    # Verificando se alguma palavra-chave está presente no currículo
+    palavras_chave_encontradas = [palavra for palavra in palavras_chave if palavra in palavras_encontradas]
+
+    if palavras_chave_encontradas:
+        return True, palavras_chave_encontradas
+    else:
+        return False, []
+
+# Exemplo de uso:
+caminho_curriculo = 'caminho/do/curriculo.pdf'
+analise, palavras_chave_encontradas = analisar_curriculo(caminho_curriculo, palavras_chave)
+
+if analise:
+    print("O currículo será analisado.")
+    print("Palavras-chave encontradas:", palavras_chave_encontradas)
+else:
+    print("O currículo não contém palavras-chave relevantes para a função no setor de TI.")
+

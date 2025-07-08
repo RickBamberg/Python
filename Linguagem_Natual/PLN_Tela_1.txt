@@ -1,0 +1,32 @@
+Me Streamvard- Transmissão — É x | [B LOGERADORDERAIZUVESDE x — Co CDPROnMoRH-Coabormomy — xd
+
+€ C à colabresearchgoogiecom/drive/1p-ObJGTUb3-SNTe33yShPsIRjUy6KvéscrolTo=G7NVUbdY my au.
++ Código +Texto  Todasas alterações foram salvas Conectar
+
+- 2º Conexão com Dados TyroR
+fed
+
+(X) O inport nte
+import random
+from nltk.tokenize import word tokenize
+f from sklearn.model selection import train test split
+from sklearn.naive bayes import MultinomialNB |
+from sklearn.feature extraction.text import CountVectorizer
+
+* Baixe os recursos do NLTK (pode ser necessário apenas na primeira execução)
+nltk.download('punkt')
+
+* Defina as palavras-chave relevantes para a vaga de Cientista de Dados
+palavras chave = ['cientista', 'dados', 'machine learning', 'análise', 'estatística']
+
+%* Exemplo de currículos para treinamento do modelo
+curriculo1l = "Cientista de Dados com experiência em análise estatística e machine learning."
+
+oO curriculo2 = "Estudante de Ciência da Computação com interesse em dados e aprendizado de máquina.”
+curriculo3i = "Desenvolvedor web com habilidades em Python, procurando transição para a área de dados.'
+=| curriculo4 = "Analista de Marketing com conhecimentos em redes sociais e análise de dados." efe:
+SEE
+m o
+
+rr NO Messasa=====-—A—= Jd. Nnad=
+

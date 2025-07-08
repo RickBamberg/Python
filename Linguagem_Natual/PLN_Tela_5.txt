@@ -1,0 +1,54 @@
+15
+16
+
+19
+
+import streamlit as st e—
+
+import nltk as
+import random == .
+from nltk.tokenize import word tokenize E
+from sklearn.naive bayes import multinomíalna Sa -
+from sklearn.feature extraction.text import Countvectorizer re
+import
+
+import pdfplumber
+
+4 Baixe os recursos do NUTK (pode ser necessário apenas na primeira execução)
+
+nl tk.download(' punkt')
+
+4 Defina as palavras-chave relevantes para à vaga de Cientista de Dados
+palavras chave = ['cientista', 'dados', 'machine learning', "análise", "estatística", 'python']
+
+* Exemplo de currículos para treinamento do modelo
+
+currículo1 = "Cientista de Dados com experiência em análise estatística e machine learning.”
+curriculo2 = "Estudante de Ciência da Computação com interesse em dados e aprendizado de máquina.”
+curriculo3 = "Desenvolvedor web com habilidades em Python, procurando transição para a área de dados.”
+currículos » “Analista de Marketing com conhecimentos em redes sociais e análise de dados.”
+
+* Criação dos dados de treinamento
+
+documentos = [(curriculo1, 1), (currículo2, 1), (currículos, O), (currículos, O)]
+random. shuffle(documentos)
+
+textos, labels - zip(*documentos)
+
+£* Pré-processamento dos textos
+vetorizador = Countvectorizer()
+x = vetorizador.fit transform(textos)
+
+s Treinamento do modelo Naíve Rayes
+modelo « MultinomialNs()
+modelo. fit(X, labels)
+
+%s Função para verificar se um currículo contém as palavras-chave relevantes usando o modelo o
+det verificar palavras chave com modelo(currículo, modelo, vetorizador): Es
+currículo lower » currículo. lower() si
+curriculo vetorizado « vetorizador.transfora( [curriculo lower)])
+resultado = modelo.predict(curriculo vetorizado)
+
+rats) ”
+
+Ia 7 Cad OS esc Concae dd UTES [(CE0U5G () Duda RANDON fitriananm termdsd ED O

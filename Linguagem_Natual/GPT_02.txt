@@ -1,0 +1,66 @@
+import PyPDF2
+import re
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+
+# Baixe os dados do nltk (caso ainda não tenha feito)
+nltk.download('punkt')
+nltk.download('stopwords')
+
+# Palavras-chave relevantes para a função no setor de TI
+palavras_chave = ['python', 'java', 'javascript', 'c++', 'ruby', 'php', 'html', 'css', 'sql', 'django']
+
+def extrair_texto_pdf(caminho_arquivo):
+    texto = ''
+    with open(caminho_arquivo, 'rb') as arquivo:
+        pdf_leitor = PyPDF2.PdfFileReader(arquivo)
+        for pagina_num in range(pdf_leitor.numPages):
+            pagina = pdf_leitor.getPage(pagina_num)
+            texto += pagina.extractText()
+    return texto.lower()  # Convertendo para minúsculas para comparação sem distinção de maiúsculas e minúsculas
+
+def preprocessamento(texto):
+    # Remover pontuações e números
+    texto = re.sub(r'[^\w\s]', '', texto)
+    texto = re.sub(r'\d+', '', texto)
+   
+    # Tokenização (separar o texto em palavras)
+    palavras = word_tokenize(texto)
+   
+    # Remover as stopwords (palavras irrelevantes)
+    stopwords_nltk = set(stopwords.words('portuguese'))
+    palavras_filtradas = [palavra for palavra in palavras if palavra.lower() not in stopwords_nltk]
+   
+    # Unir as palavras novamente em uma única string
+    texto_preprocessado = ' '.join(palavras_filtradas)
+   
+    return texto_preprocessado
+
+def analisar_curriculo(caminho_arquivo, palavras_chave):
+    texto_curriculo = extrair_texto_pdf(caminho_arquivo)
+    texto_preprocessado = preprocessamento(texto_curriculo)
+   
+    # Vetorização das palavras
+    vectorizer = CountVectorizer(vocabulary=palavras_chave)
+    texto_vetorizado = vectorizer.transform([texto_preprocessado])
+   
+    # Carregar o modelo de classificação pré-treinado (usamos o Naive Bayes neste exemplo)
+    modelo = MultinomialNB()
+    modelo.load('modelo_classificacao_curriculo.pkl')
+   
+    # Realizar a classificação
+    resultado = modelo.predict(texto_vetorizado)
+   
+    return resultado[0]
+
+# Exemplo de uso:
+caminho_curriculo = 'caminho/do/curriculo.pdf'
+resultado_analise = analisar_curriculo(caminho_curriculo, palavras_chave)
+
+if resultado_analise == 1:
+    print("O currículo será analisado.")
+else:
+    print("O currículo não contém palavras-chave relevantes para a função no setor de TI.")

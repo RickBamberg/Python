@@ -1,0 +1,46 @@
+return resuitado| 6O| == 3
+
+e Função para processar um documento em PDF
+def processar pdf(file):
+
+pdf = pdfplumber .open(file)
+
+text = "”
+
+for page in pdf .pages:
+
+text += page.extract text()
+pdf .close()
+return text
+
+% Interface do aplicativo
+st.title(“Triagem de Currículos - Gestão de RH")
+
+uploaded file = st.file uploader("Faça upload de um arquivo PDF contendo os currículos:", type=["pdf"])
+
+if uploaded file is not None:
+4" Processa o PDF e obtém o texto
+
+* tetopdf»
+
+s Verifica se os currículos foram aprovados
+aprovados = (]
+for curriculo in texto pdf .split("Wnin”):
+if verificar palavras chave com modelo(curriculo, modelo, vetorizador):
+aprovados . append( curriculo)
+1
+
+* Exibe a lista de aprovados
+
+st .header (“Currículos Aprovados:”")
+
+for i, currículo in enumerate(aprovados):
+st.write(f"(i+1). (currículo)”)
+
+EN
+
+FS
+TE
+
+La 58, Col 45 (78 selectec) Spaces 4 UTIFBS CRF
+
