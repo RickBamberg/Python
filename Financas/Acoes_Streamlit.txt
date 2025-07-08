@@ -1,0 +1,102 @@
+import investpy as ip
+import datetime
+
+dt_start = datetime.today() - timedelta(days=30)
+from_date_str = format_date(dt_start).replace('-', '-')
+from_date_str = from_date_str.replace('06-07-23', '2023-06-07')
+dt_end = datetime.today()
+
+def format_date(dt):
+    return dt.strftime('%Y-%m-%d')
+
+
+df = ip.get_stock_historical_data(stock='EMGI4',
+                                 country='Brazil',
+                                 from_date=from_date_str,
+                                 to_date=format_date(dt_end),
+                                 interval='Daily')
+								 
+								 
+								 import streamlit as st
+import pandas as pd
+import investpy as ip
+import yfinance as yf
+from datetime import datetime, timedelta
+import plotly.graph_objs as go
+
+countries = ['Brazil', 'United States']
+intervals = ['Daily', 'Weekly', 'Monthly']
+
+start_date = datetime.today() - timedelta(days=30)
+end_date = datetime.today()
+
+# Converte as datas para o formato 'yyyy-mm-dd' exigido pelo yfinance
+start_date_str = start_date.strftime('%Y-%m-%d')
+end_date_str = end_date.strftime('%Y-%m-%d')
+
+@st.cache
+def consultar_acao(stock, contry, from_date, to_date, interval):
+    df = yf.download(ticker, start=start_date_str, end=end_date_str)
+    return df
+
+def format_date(dt, format='%d/%m/%y'):
+    return dt.strftime(format)
+
+def plotCandleStick(df, acao='ticket'):
+    trace1 = {
+        'x' : df.index,
+        'open' : df.Open,
+        'close' : df.Close,
+        'high' : df.High,
+        'low' : df.Low,
+        'type' : 'candlestick',
+        'name' : acao,
+        'showlegend' : False
+    }
+    data = [trace1]
+    layout = go.Layout()
+
+    fig = go.Figure(data=data, layout=layout)
+    return fig
+
+# Criando uma barra lateral
+barra_lateral = st.sidebar.empty()
+
+country_select = st.sidebar.selectbox('Selecione o país:, countries')
+
+acoes = ip.get_stocks_list(country=country_select)
+
+stock_select = st.sidebar.selectbox('Selecione o ativo:', acoes)
+
+from_date = st.sidebar.date_input('De: ', start_date)
+to_date = st.sidebar.date_input('Para: ', end_date)
+
+interval_select = st.sidebar.selectbox('Selecione o intervalo: ', intervals)
+
+carregar_dados = st.sidebar.checkbox('Carregar dados')
+
+# Elementos centrais da pagina
+st.title('Stock Monitor')
+
+st.header('Ações')
+
+st.subheader('Visualizaão gráfica')
+
+grafico_candle = st.empty()
+grafico_line = st.empty()
+
+if from_date > to_date:
+   st.sidebar.error('Data de inicio maior do que data final')
+else:
+   df = consultar_acao(stock_select, country_select, format_date(from_date), format_date(to_date), interval_select)
+   try:
+       fig = plotCandleStick(df)
+       grafico_candle = st.plotly_chart(fig)
+       grafico_line = st.line_chart(df.Close)
+
+       if carregar_dados:
+          st.subheader('Dados')
+          dados = st.dataframe(df)
+   except Exception as e:
+        st.error(e)
+
