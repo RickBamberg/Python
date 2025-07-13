@@ -1,0 +1,183 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#f5f5f5">
+
+    <!-- Título do Jogo -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Jogo da Velha"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#2196F3"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Status do Jogo -->
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Vez do jogador X"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#333333"
+        android:layout_marginBottom="24dp"
+        android:background="#ffffff"
+        android:padding="12dp"
+        android:elevation="2dp" />
+
+    <!-- Tabuleiro do Jogo -->
+    <androidx.gridlayout.widget.GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:columnCount="3"
+        android:rowCount="3"
+        android:layout_marginBottom="24dp">
+
+        <!-- Linha 0 -->
+        <Button
+            android:id="@+id/btn_0_0"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:backgroundTint="#2196F3"
+            android:elevation="4dp" />
+
+        <Button
+            android:id="@+id/btn_0_1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:backgroundTint="#2196F3"
+            android:elevation="4dp" />
+
+        <Button
+            android:id="@+id/btn_0_2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:backgroundTint="#2196F3"
+            android:elevation="4dp" />
+
+        <!-- Linha 1 -->
+        <Button
+            android:id="@+id/btn_1_0"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:backgroundTint="#2196F3"
+            android:elevation="4dp" />
+
+        <Button
+            android:id="@+id/btn_1_1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:backgroundTint="#2196F3"
+            android:elevation="4dp" />
+
+        <Button
+            android:id="@+id/btn_1_2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:backgroundTint="#2196F3"
+            android:elevation="4dp" />
+
+        <!-- Linha 2 -->
+        <Button
+            android:id="@+id/btn_2_0"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:backgroundTint="#2196F3"
+            android:elevation="4dp" />
+
+        <Button
+            android:id="@+id/btn_2_1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:backgroundTint="#2196F3"
+            android:elevation="4dp" />
+
+        <Button
+            android:id="@+id/btn_2_2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:layout_margin="4dp"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
+            android:backgroundTint="#2196F3"
+            android:elevation="4dp" />
+
+    </androidx.gridlayout.widget.GridLayout>
+
+    <!-- Botão de Reset -->
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Novo Jogo"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:backgroundTint="#FF5722"
+        android:layout_marginTop="16dp"
+        android:elevation="4dp"
+        android:padding="16dp" />
+
+</LinearLayout>
