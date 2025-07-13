@@ -1,0 +1,206 @@
+#---------------------------------------------------------------------------------------------#
+#Escreva um script em python para mostrar a frase "Hello wourld" em 2 celulares ao mesmo tempo
+#---------------------------------------------------------------------------------------------#
+
+# Instalar adb-shell
+pip install adb-shell
+
+# Importação
+from adb_shell.adb_device import AdbDeviceUsb, AdbDeviceTcp
+from adb_shell.auth.sign_pythonrsa import PythonRSASigner
+
+# Configuração do dispositivo 1
+device1_ip = 
+device1_ip =
+
+device1_ip
+
+device1
+
+device
+"192.168.0.1"  # Insira o endereço IP do dispositivo 1
+device1_port = 
+device1_port = 
+
+device1_port =
+
+device1_port
+
+device1
+
+device
+5555  # Insira a porta do dispositivo 1
+
+# Configuração do dispositivo 2
+device2_ip = 
+device2_ip =
+
+device2_ip
+
+device2
+
+device
+"192.168.0.2"  # Insira o endereço IP do dispositivo 2
+device2_port = 
+device2_port = 
+
+device2_port =
+
+device2_port
+
+device
+5555  # Insira a porta do dispositivo 2
+
+# Configuração da mensagem
+message = 
+message =
+
+message
+"Hello world"  # Insira a mensagem que deseja enviar
+
+# Criação do objeto de autenticação
+signer = PythonRSASigner.from_private_key_file(
+signer = PythonRSASigner
+
+signer = PythonRSAS
+
+signer = PythonRS
+
+signer = Python
+
+signer =
+
+signer
+
+sign
+"path/to/private/key")
+
+# Conexão e envio da mensagem para o dispositivo 1
+device1 = AdbDeviceTcp(device1_ip, device1_port, default_transport_timeout_s=
+device1 = AdbDeviceTcp(device1_ip, device1_port, default_transport_timeout
+
+device1 = AdbDeviceTcp(device1_ip, device1
+
+device1 = AdbDeviceTcp(device1_ip, device
+
+device1 = AdbDeviceTcp(device1_ip,
+
+device1 = AdbDeviceTcp(device1_ip
+
+device1 = AdbDeviceTcp(device1
+
+device1 = AdbDeviceTcp(device
+
+device1 = AdbDeviceTcp
+
+device1 = AdbDevice
+
+device1 = Adb
+
+device1 = A
+
+device1 =
+
+device1
+
+device
+9.)
+device1.connect(rsa_keys=[signer])
+device1.shell(
+device1.connect(rsa_keys=[signer])
+device1.shell(f
+
+device1.connect(rsa_keys=[signer])
+device1.shell
+
+device1.connect(rsa_keys=[signer])
+device1
+
+device1.connect(rsa_keys=[signer])
+device
+
+device1.connect(rsa_keys=[signer])
+
+device1.connect(rsa_keys
+
+device
+f'am start -a android.intent.action.SENDTO -d sms:5551234567 --es sms_body "{message}" --ez exit_on_sent true')
+
+# Conexão e envio da mensagem para o dispositivo 2
+device2 = AdbDeviceTcp(device2_ip, device2_port, default_transport_timeout_s=
+device2 = AdbDeviceTcp(device2_ip, device2_port, default_transport_timeout
+
+device2 = AdbDeviceTcp(device2_ip, device2
+
+device2 = AdbDeviceTcp(device2_ip, device
+
+device2 = AdbDeviceTcp(device2_ip,
+
+device2 = AdbDeviceTcp(device2_ip
+
+device2 = AdbDeviceTcp(device2
+
+device2 = AdbDeviceTcp(device
+
+device2 = AdbDeviceTcp
+
+device2 = Adb
+
+device2 = A
+
+device2 =
+
+device2
+
+device
+9.)
+device2.connect(rsa_keys=[signer])
+device2.shell(
+device2.connect(rsa_keys=[signer])
+device2.shell(f
+
+device2.connect(rsa_keys=[signer])
+device2.shell
+
+device2.connect(rsa_keys=[signer])
+device2
+
+device2.connect(rsa_keys=[signer])
+device
+
+device2.connect(rsa_keys=[signer])
+
+device2.connect(rsa_keys=[signer
+
+device2.connect(rsa
+
+device2.connect(r
+
+device2.connect
+
+device
+f'am start -a android.intent.action.SENDTO -d sms:5551234567 --es sms_body "{message}" --ez exit_on_sent true')
+
+# Fechamento da conexão
+device1.close()
+device2.close()
+
+device1.close()
+device2.close()
+``
+
+device1.close()
+device2.close()
+
+device1.close()
+device
+
+device1.close()
+
+device
+# certificadodevice1_ip,device1_port,device2_ip,device2_portemessagepelospath/to/private/keypelo
+
+# Salve send_message.py)
+
+# Copiar código
+python send_message.py
