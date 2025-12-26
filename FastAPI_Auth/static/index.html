@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Autenticação - FastAPI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        
+        h1, h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            font-weight: 600;
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button.btn-danger {
+            background: #dc3545;
+        }
+        
+        button.btn-danger:hover {
+            background: #c82333;
+        }
+        
+        button.btn-secondary {
+            background: #6c757d;
+        }
+        
+        .message {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .profile-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .profile-label {
+            font-weight: 600;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .profile-value {
+            color: #333;
+            font-size: 18px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .badge-admin {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .badge-user {
+            background: #28a745;
+            color: white;
+        }
+        
+        .badge-moderator {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .navbar {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navbar -->
+        <div id="navbar" class="navbar hidden">
+            <div class="navbar-brand">🔐 Sistema</div>
+            <div class="navbar-user">
+                <span id="navbar-username"></span>
+                <span id="navbar-role"></span>
+                <button onclick="handleLogout()" class="btn-danger">Sair</button>
+            </div>
+        </div>
+
+        <div id="message" class="message"></div>
+        
+        <!-- Seção de Login/Registro -->
+        <div id="auth-section" class="card">
+            <h1>🔐 Sistema de Autenticação</h1>
+            
+            <div class="tabs">
+                <button class="tab active" onclick="showAuthTab('login')">Login</button>
+                <button class="tab" onclick="showAuthTab('register')">Registrar</button>
+            </div>
+            
+            <!-- Login -->
+            <div id="login-form" class="section active">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-username">Usuário</label>
+                        <input type="text" id="login-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit">Entrar</button>
+                </form>
+            </div>
+            
+            <!-- Registro -->
+            <div id="register-form" class="section">
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="register-username">Usuário</label>
+                        <input type="text" id="register-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-fullname">Nome Completo (opcional)</label>
+                        <input type="text" id="register-fullname">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Senha</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <button type="submit">Criar Conta</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Seção Principal (após login) -->
+        <div id="main-section" class="hidden">
+            <div class="card">
+                <div class="tabs">
+                    <button class="tab active" onclick="showMainTab('profile')">Meu Perfil</button>
+                    <button id="admin-tab" class="tab hidden" onclick="showMainTab('admin')">Painel Admin</button>
+                </div>
+                
+                <!-- Perfil -->
+                <div id="profile-section" class="section active">
+                    <h2>Meu Perfil</h2>
+                    <div class="profile-item">
+                        <div class="profile-label">ID</div>
+                        <div class="profile-value" id="user-id">-</div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">Usuário</div>
+                        <div class="profile-value" id="user-username">-</div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">Email</div>
+                        <div class="profile-value" id="user-email">-</div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">Nome Completo</div>
+                        <div class="profile-value" id="user-fullname">-</div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">Role</div>
+                        <div class="profile-value" id="user-role">-</div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">Status</div>
+                        <div class="profile-value" id="user-status">-</div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-label">Cadastrado em</div>
+                        <div class="profile-value" id="user-created">-</div>
+                    </div>
+                    
+                    <hr style="margin: 30px 0;">
+                    
+                    <h3>Atualizar Perfil</h3>
+                    <form onsubmit="handleUpdateProfile(event)">
+                        <div class="form-group">
+                            <label for="update-fullname">Nome Completo</label>
+                            <input type="text" id="update-fullname">
+                        </div>
+                        <div class="form-group">
+                            <label for="update-email">Email</label>
+                            <input type="email" id="update-email">
+                        </div>
+                        <button type="submit">Atualizar</button>
+                    </form>
+                </div>
+                
+                <!-- Admin -->
+                <div id="admin-section" class="section">
+                    <h2>Painel Administrativo</h2>
+                    <button onclick="loadAllUsers()">🔄 Recarregar Usuários</button>
+                    
+                    <table id="users-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Usuário</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-tbody">
+                            <tr>
+                                <td colspan="6" style="text-align: center;">Carregando...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000';
+        let currentUserData = null;
+        
+        window.onload = function() {
+            const token = localStorage.getItem('access_token');
+            if (token) {
+                loadUserProfile();
+            }
+        };
+        
+        function showAuthTab(tab) {
+            document.querySelectorAll('#auth-section .tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#auth-section .section').forEach(f => f.classList.remove('active'));
+            
+            if (tab === 'login') {
+                document.querySelector('#auth-section .tab:first-child').classList.add('active');
+                document.getElementById('login-form').classList.add('active');
+            } else {
+                document.querySelector('#auth-section .tab:last-child').classList.add('active');
+                document.getElementById('register-form').classList.add('active');
+            }
+        }
+        
+        function showMainTab(tab) {
+            document.querySelectorAll('#main-section .tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('#main-section .section').forEach(f => f.classList.remove('active'));
+            
+            if (tab === 'profile') {
+                document.querySelector('#main-section .tab:first-child').classList.add('active');
+                document.getElementById('profile-section').classList.add('active');
+            } else if (tab === 'admin') {
+                document.querySelector('#main-section .tab:last-child').classList.add('active');
+                document.getElementById('admin-section').classList.add('active');
+                loadAllUsers();
+            }
+        }
+        
+        function showMessage(text, type) {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type}`;
+            message.style.display = 'block';
+            
+            setTimeout(() => {
+                message.style.display = 'none';
+            }, 5000);
+        }
+        
+        function getRoleBadge(role) {
+            const badges = {
+                'admin': '<span class="badge badge-admin">ADMIN</span>',
+                'user': '<span class="badge badge-user">USER</span>',
+                'moderator': '<span class="badge badge-moderator">MODERATOR</span>'
+            };
+            return badges[role] || role;
+        }
+        
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('register-username').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const full_name = document.getElementById('register-fullname').value || null;
+            
+            try {
+                const response = await fetch(`${API_URL}/register`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ username, email, password, full_name })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showMessage('Conta criada! Faça login.', 'success');
+                    showAuthTab('login');
+                    document.getElementById('register-form').reset();
+                } else {
+                    showMessage(data.detail || 'Erro ao criar conta', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao conectar com o servidor', 'error');
+            }
+        }
+        
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            try {
+                const formData = new URLSearchParams();
+                formData.append('username', username);
+                formData.append('password', password);
+                
+                const response = await fetch(`${API_URL}/token`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('access_token', data.access_token);
+                    localStorage.setItem('refresh_token', data.refresh_token);
+                    showMessage('Login realizado!', 'success');
+                    loadUserProfile();
+                } else {
+                    showMessage(data.detail || 'Erro ao fazer login', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao conectar', 'error');
+            }
+        }
+        
+        async function loadUserProfile() {
+            const token = localStorage.getItem('access_token');
+            
+            try {
+                const response = await fetch(`${API_URL}/users/me`, {
+                    headers: {'Authorization': `Bearer ${token}`}
+                });
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    currentUserData = user;
+                    
+                    document.getElementById('user-id').textContent = user.id;
+                    document.getElementById('user-username').textContent = user.username;
+                    document.getElementById('user-email').textContent = user.email;
+                    document.getElementById('user-fullname').textContent = user.full_name || 'Não informado';
+                    document.getElementById('user-role').innerHTML = getRoleBadge(user.role);
+                    document.getElementById('user-status').textContent = user.is_active ? '✅ Ativo' : '❌ Inativo';
+                    document.getElementById('user-created').textContent = new Date(user.created_at).toLocaleString('pt-BR');
+                    
+                    document.getElementById('update-fullname').value = user.full_name || '';
+                    document.getElementById('update-email').value = user.email;
+                    
+                    document.getElementById('navbar-username').textContent = user.username;
+                    document.getElementById('navbar-role').innerHTML = getRoleBadge(user.role);
+                    
+                    if (user.role === 'admin') {
+                        document.getElementById('admin-tab').classList.remove('hidden');
+                    }
+                    
+                    document.getElementById('auth-section').classList.add('hidden');
+                    document.getElementById('main-section').classList.remove('hidden');
+                    document.getElementById('navbar').classList.remove('hidden');
+                } else {
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('refresh_token');
+                    showMessage('Sessão expirada', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao carregar perfil', 'error');
+            }
+        }
+        
+        async function handleUpdateProfile(event) {
+            event.preventDefault();
+            
+            const token = localStorage.getItem('access_token');
+            const full_name = document.getElementById('update-fullname').value || null;
+            const email = document.getElementById('update-email').value;
+            
+            try {
+                const response = await fetch(`${API_URL}/users/me`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ full_name, email })
+                });
+                
+                if (response.ok) {
+                    showMessage('Perfil atualizado!', 'success');
+                    loadUserProfile();
+                } else {
+                    const data = await response.json();
+                    showMessage(data.detail || 'Erro ao atualizar', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao conectar', 'error');
+            }
+        }
+        
+        async function loadAllUsers() {
+            const token = localStorage.getItem('access_token');
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/users`, {
+                    headers: {'Authorization': `Bearer ${token}`}
+                });
+                
+                if (response.ok) {
+                    const users = await response.json();
+                    const tbody = document.getElementById('users-tbody');
+                    tbody.innerHTML = '';
+                    
+                    users.forEach(user => {
+                        const row = tbody.insertRow();
+                        row.innerHTML = `
+                            <td>${user.id}</td>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
+                            <td>${getRoleBadge(user.role)}</td>
+                            <td>${user.is_active ? '✅' : '❌'}</td>
+                            <td>
+                                ${user.id !== currentUserData.id ? `
+                                    <button onclick="changeUserRole(${user.id}, '${user.username}')" class="btn-secondary">Alterar Role</button>
+                                    <button onclick="deleteUser(${user.id}, '${user.username}')" class="btn-danger">Deletar</button>
+                                ` : '<em>Você</em>'}
+                            </td>
+                        `;
+                    });
+                } else {
+                    showMessage('Erro ao carregar usuários', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao conectar', 'error');
+            }
+        }
+        
+        async function changeUserRole(userId, username) {
+            const newRole = prompt(`Alterar role de ${username} para:\n\nadmin\nuser\nmoderator`, 'user');
+            
+            if (!newRole || !['admin', 'user', 'moderator'].includes(newRole)) {
+                return;
+            }
+            
+            const token = localStorage.getItem('access_token');
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/users/role`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ user_id: userId, new_role: newRole })
+                });
+                
+                if (response.ok) {
+                    showMessage('Role atualizado!', 'success');
+                    loadAllUsers();
+                } else {
+                    const data = await response.json();
+                    showMessage(data.detail || 'Erro', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao conectar', 'error');
+            }
+        }
+        
+        async function deleteUser(userId, username) {
+            if (!confirm(`Tem certeza que deseja deletar o usuário ${username}?`)) {
+                return;
+            }
+            
+            const token = localStorage.getItem('access_token');
+            
+            try {
+                const response = await fetch(`${API_URL}/admin/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: {'Authorization': `Bearer ${token}`}
+                });
+                
+                if (response.ok) {
+                    showMessage('Usuário deletado!', 'success');
+                    loadAllUsers();
+                } else {
+                    const data = await response.json();
+                    showMessage(data.detail || 'Erro', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro ao conectar', 'error');
+            }
+        }
+        
+        async function handleLogout() {
+            const token = localStorage.getItem('access_token');
+            const refreshToken = localStorage.getItem('refresh_token');
+            
+            try {
+                await fetch(`${API_URL}/logout`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ refresh_token: refreshToken })
+                });
+            } catch (error) {
+                console.error('Erro ao fazer logout:', error);
+            }
+            
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            currentUserData = null;
+            
+            document.getElementById('auth-section').classList.remove('hidden');
+            document.getElementById('main-section').classList.add('hidden');
+            document.getElementById('navbar').classList.add('hidden');
+            document.getElementById('admin-tab').classList.add('hidden');
+            document.getElementById('login-form').reset();
+            
+            showMessage('Logout realizado!', 'success');
+        }
+    </script>
+</body>
+</html>
