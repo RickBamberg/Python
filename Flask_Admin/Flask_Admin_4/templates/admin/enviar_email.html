@@ -1,0 +1,43 @@
+
+{% extends 'admin/master.html' %}
+{% block body %}
+<div class="container-fluid">
+    <h1 style="margin: 30px 0;">📧 Enviar Email para Clientes</h1>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    {% if mensagem %}
+                    <div class="alert alert-success">{{ mensagem }}</div>
+                    {% endif %}
+                    
+                    <form method="POST">
+                        <div class="form-group">
+                            <label>Destinatário:</label>
+                            <select name="destinatario" class="form-control" required>
+                                <option value="">Selecione um cliente...</option>
+                                {% for cliente in clientes %}
+                                <option value="{{ cliente.email }}">{{ cliente.nome }} ({{ cliente.email }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Assunto:</label>
+                            <input type="text" name="assunto" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Mensagem:</label>
+                            <textarea name="corpo" class="form-control" rows="6" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">📤 Enviar Email</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

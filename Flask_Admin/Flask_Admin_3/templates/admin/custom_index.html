@@ -1,0 +1,43 @@
+
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 style="margin: 30px 0; color: #2c3e50;">Bem-vindo ao Sistema de Gestão</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <div class="card-icon" style="color: #667eea;">👥</div>
+                <h3>Clientes</h3>
+                <p>Gerencie seus clientes de forma eficiente</p>
+                <a href="{{ url_for('cliente.index_view') }}" class="btn btn-primary">Acessar Clientes</a>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <div class="card-icon" style="color: #764ba2;">🔐</div>
+                <h3>Usuários</h3>
+                <p>Administre os usuários do sistema</p>
+                <a href="{{ url_for('usuario.index_view') }}" class="btn btn-primary">Acessar Usuários</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-md-12">
+            <div class="dashboard-card">
+                <h4>📊 Recursos do Sistema</h4>
+                <ul>
+                    <li>✅ Cadastro completo de clientes e usuários</li>
+                    <li>✅ Busca e filtros avançados</li>
+                    <li>✅ Exportação para CSV e Excel</li>
+                    <li>✅ Edição inline de dados</li>
+                    <li>✅ Interface responsiva e moderna</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

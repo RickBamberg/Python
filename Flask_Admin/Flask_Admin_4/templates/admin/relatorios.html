@@ -1,0 +1,58 @@
+
+{% extends 'admin/master.html' %}
+{% block body %}
+<div class="container-fluid">
+    <h1 style="margin: 30px 0;">📊 Relatórios e Estatísticas</h1>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="dashboard-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <h3>👥 Clientes</h3>
+                <h1>{{ total_clientes }}</h1>
+                <p>✅ Ativos: {{ clientes_ativos }}</p>
+                <p>❌ Inativos: {{ clientes_inativos }}</p>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="dashboard-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                <h3>🔐 Usuários</h3>
+                <h1>{{ total_usuarios }}</h1>
+                <p>✅ Ativos: {{ usuarios_ativos }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row" style="margin-top: 30px;">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>📋 Últimos Clientes Cadastrados</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Telefone</th>
+                                <th>Data de Cadastro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cliente in ultimos_clientes %}
+                            <tr>
+                                <td>{{ cliente.nome }}</td>
+                                <td>{{ cliente.email }}</td>
+                                <td>{{ cliente.telefone }}</td>
+                                <td>{{ cliente.data_cadastro.strftime('%d/%m/%Y %H:%M') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

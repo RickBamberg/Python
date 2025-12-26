@@ -1,0 +1,56 @@
+
+{% extends 'admin/master.html' %}
+{% block body %}
+<div class="container-fluid">
+    <h1 style="margin: 30px 0; color: #2c3e50;">Bem-vindo ao Sistema de Gestão</h1>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <div class="card-icon" style="color: #667eea;">👥</div>
+                <h3>Clientes</h3>
+                <p>Gerencie seus clientes</p>
+                <a href="{{ url_for('cliente.index_view') }}" class="btn btn-primary">Acessar</a>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <div class="card-icon" style="color: #764ba2;">🔐</div>
+                <h3>Usuários</h3>
+                <p>Administre usuários</p>
+                <a href="{{ url_for('usuario.index_view') }}" class="btn btn-primary">Acessar</a>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="dashboard-card">
+                <div class="card-icon" style="color: #f093fb;">🧮</div>
+                <h3>Calculadora</h3>
+                <p>Faça cálculos rápidos</p>
+                <a href="{{ url_for('calculadora.index') }}" class="btn btn-primary">Acessar</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <div class="card-icon" style="color: #667eea;">📊</div>
+                <h3>Relatórios</h3>
+                <p>Veja estatísticas detalhadas</p>
+                <a href="{{ url_for('relatorios.index') }}" class="btn btn-primary">Acessar</a>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="dashboard-card">
+                <div class="card-icon" style="color: #f5576c;">📧</div>
+                <h3>Enviar Email</h3>
+                <p>Comunique-se com clientes</p>
+                <a href="{{ url_for('email.index') }}" class="btn btn-primary">Acessar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
